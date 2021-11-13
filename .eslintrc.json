@@ -1,0 +1,82 @@
+{
+  "plugins": [
+    "@typescript-eslint",
+    "import"
+  ],
+  "extends": [
+    "next/core-web-vitals",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "settings": {
+    "import/resolver": {
+      // Need to define this to enable the typescript import resolver. This gives ESLint
+      // awareness of the "paths" in tsconfig.json, allowing the import/order rule to better
+      // distinguish modules contained there as internal, improving grouping enforcement.
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "import/extensions": [
+      "off"
+      // *** doesn't seem to like path alias imports, maybe it isn't resolving them
+      // "error",
+      // "ignorePackages",
+      // {
+      //   "js": "never",
+      //   "jsx": "never",
+      //   "ts": "never",
+      //   "tsx": "never"
+      // }
+    ],
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "~/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ],
+        "groups": [
+          "builtin",
+          "external",
+          [
+            "internal",
+            "parent",
+            "sibling",
+            "index"
+          ]
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    // suppress errors for missing 'import React' in files
+    "react/react-in-jsx-scope": "off"
+  }
+}
