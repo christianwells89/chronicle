@@ -5,7 +5,7 @@ import { DarkModeSwitch } from './darkModeSwitch';
 export const Header = () => (
   <Container>
     <Flex>
-      <Heading>Journal</Heading>
+      <Heading>Chronicle</Heading>
       <Spacer />
       <DarkModeSwitch />
     </Flex>
