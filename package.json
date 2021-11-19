@@ -10,6 +10,7 @@
     "prisma": "prisma"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.1",
     "@chakra-ui/theme-tools": "^1.3.1",
     "@emotion/react": "^11",

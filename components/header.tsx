@@ -2,6 +2,7 @@ import { Box, Container, Heading, Flex, Spacer, useColorModeValue } from '@chakr
 
 import { DarkModeSwitch } from './darkModeSwitch';
 import { Link } from './link';
+import { Quill } from './quill';
 
 export const Header = () => (
   <Box
@@ -10,10 +11,15 @@ export const Header = () => (
     borderBottomWidth="2px"
     borderBottomColor={useColorModeValue('gray.200', 'gray.400')}
   >
-    <Container>
+    <Container maxW="container.md">
       <Flex>
         <Link href="/">
-          <Heading>Chronicle</Heading>
+          <Flex alignItems="center">
+            <Quill height="30px" />
+            <Heading ml={2} color={useColorModeValue('orange.800', 'orange.200')}>
+              Chronicle
+            </Heading>
+          </Flex>
         </Link>
         <Spacer />
         <DarkModeSwitch />
