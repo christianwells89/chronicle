@@ -1,10 +1,11 @@
-import { Box, Heading, HStack, Text, useColorModeValue, VStack } from '@chakra-ui/react';
-import type { Entry } from '@prisma/client';
+import { Box, Heading, HStack, Tag, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { format, parseISO } from 'date-fns';
+
+import type { SerializedEntryWithTags } from '~/pages/api/entries';
 
 import { Link } from './link';
 
-export const EntryCard = ({ entry }: { entry: Entry }) => {
+export const EntryCard = ({ entry }: { entry: SerializedEntryWithTags }) => {
   const link = `/entries/${entry.uuid}`;
   // This actually gets serialized as a string. TODO: correct the types
   const date = parseISO(entry.date as unknown as string);
@@ -41,9 +42,16 @@ export const EntryCard = ({ entry }: { entry: Entry }) => {
           <Heading size="sm" isTruncated>
             {entry.title}
           </Heading>
-          <Text fontSize="sm" noOfLines={entry.title === null ? 4 : 3}>
+          <Text fontSize="sm" noOfLines={entry.title === null ? 3 : 2}>
             {entry.text}
           </Text>
+          <Box pt={1}>
+            {entry.tags.map((tag) => (
+              <Tag key={tag.id} colorScheme="orange" size="sm" mr={1}>
+                {tag.text}
+              </Tag>
+            ))}
+          </Box>
         </Box>
       </HStack>
     </Link>
