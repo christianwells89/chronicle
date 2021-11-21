@@ -4,8 +4,6 @@ import type { AppProps } from 'next/app';
 import { Header } from '~/components/header';
 import { theme } from '~/theme';
 
-import '../styles/globals.css';
-
 const MyApp = ({ Component, pageProps }: AppProps) => (
   <ChakraProvider theme={theme}>
     <CSSReset />
