@@ -5,7 +5,11 @@ import type { SerializedEntryWithTags } from '~/pages/api/entries';
 
 import { Link } from './link';
 
-export const EntryCard = ({ entry }: { entry: SerializedEntryWithTags }) => {
+interface EntryCardProps {
+  entry: SerializedEntryWithTags;
+}
+
+export const EntryCard: React.VFC<EntryCardProps> = ({ entry }) => {
   const link = `/entries/${entry.uuid}`;
   // This actually gets serialized as a string. TODO: correct the types
   const date = parseISO(entry.date as unknown as string);

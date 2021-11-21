@@ -16,7 +16,7 @@ interface DangerConfirmModalProps {
   onClose(): void;
 }
 
-export const DangerConfirmModal: React.FC<DangerConfirmModalProps> = ({
+export const DangerConfirmModal: React.VFC<DangerConfirmModalProps> = ({
   isOpen,
   context,
   consequences,

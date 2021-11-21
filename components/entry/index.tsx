@@ -9,7 +9,7 @@ interface EntryProps {
   entry: SerializedEntryWithTags;
 }
 
-export const Entry: React.FC<EntryProps> = ({ entry }) => {
+export const Entry: React.VFC<EntryProps> = ({ entry }) => {
   const [isEditing, { toggle: toggleIsEditing }] = useBoolean(false);
   const date = format(parseISO(entry.date), 'EEE d MMM Y');
   const toast = useToast();

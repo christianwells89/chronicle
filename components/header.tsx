@@ -4,7 +4,7 @@ import { DarkModeSwitch } from './darkModeSwitch';
 import { Link } from './link';
 import { Quill } from './quill';
 
-export const Header = () => (
+export const Header: React.VFC = () => (
   <Box
     w="100%"
     bg={useColorModeValue('white', 'gray.800')}

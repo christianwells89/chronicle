@@ -24,7 +24,7 @@ interface EntryFooterProps {
   onLocationAdd(): void;
 }
 
-export const EntryFooter: React.FC<EntryFooterProps> = ({
+export const EntryFooter: React.VFC<EntryFooterProps> = ({
   isEditing,
   hasChanges,
   onEdit,

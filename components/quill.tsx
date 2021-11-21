@@ -1,7 +1,7 @@
 import { useColorModeValue, useToken } from '@chakra-ui/react';
 import { SVGProps } from 'react';
 
-export const Quill: React.FC<SVGProps<SVGSVGElement>> = (props) => {
+export const Quill: React.VFC<SVGProps<SVGSVGElement>> = (props) => {
   const [orange100, orange200, orange500] = useToken('colors', [
     'orange.100',
     'orange.200',

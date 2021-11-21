@@ -6,7 +6,7 @@ interface EntryEditorProps {
   isEditable: boolean;
 }
 
-export const EntryEditor = ({ text, isEditable }: EntryEditorProps) => {
+export const EntryEditor: React.VFC<EntryEditorProps> = ({ text, isEditable }) => {
   const editor = useEditor({ extensions: [StarterKit], content: text, editable: isEditable });
 
   return <EditorContent editor={editor} />;
