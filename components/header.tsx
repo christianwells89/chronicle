@@ -16,7 +16,7 @@ export const Header = () => (
         <Link href="/">
           <Flex alignItems="center">
             <Quill height="30px" />
-            <Heading ml={2} color={useColorModeValue('orange.800', 'orange.200')}>
+            <Heading ml={2} color={useColorModeValue('orange.500', 'orange.200')}>
               Chronicle
             </Heading>
           </Flex>

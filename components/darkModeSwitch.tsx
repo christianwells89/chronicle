@@ -8,9 +8,10 @@ export const DarkModeSwitch = () => {
     <Tooltip label={colorMode === 'dark' ? 'Toggle light mode' : ' Toggle dark mode'}>
       <IconButton
         size="sm"
-        // TODO: this is a bit _too_ orange. Alter this scheme by extending the styles to match the rest of the header
         colorScheme="orange"
+        variant="outline"
         my="auto"
+        borderRadius="full"
         aria-label="Switch theme"
         icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}
         onClick={toggleColorMode}

@@ -1,14 +1,6 @@
 {
-  "plugins": [
-    "@typescript-eslint",
-    "import"
-  ],
-  "extends": [
-    "next/core-web-vitals",
-    "airbnb",
-    "airbnb-typescript",
-    "prettier"
-  ],
+  "plugins": ["@typescript-eslint", "import"],
+  "extends": ["next/core-web-vitals", "airbnb", "airbnb-typescript", "prettier"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
@@ -29,6 +21,8 @@
         "argsIgnorePattern": "^_"
       }
     ],
+    // There would be an error if it were actually a problem
+    "@typescript-eslint/no-use-before-define": "off",
     "import/extensions": [
       "off"
       // *** doesn't seem to like path alias imports, maybe it isn't resolving them
@@ -51,16 +45,7 @@
             "position": "before"
           }
         ],
-        "groups": [
-          "builtin",
-          "external",
-          [
-            "internal",
-            "parent",
-            "sibling",
-            "index"
-          ]
-        ],
+        "groups": ["builtin", "external", ["internal", "parent", "sibling", "index"]],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
