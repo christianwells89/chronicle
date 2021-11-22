@@ -1,9 +1,11 @@
 import { Box, Divider, Flex, Heading, Spacer, Tag, useBoolean, useToast } from '@chakra-ui/react';
-import { format, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 
-import { EntryEditor } from '~/components/entry/editor';
-import { EntryFooter } from '~/components/entry/footer';
 import type { SerializedEntryWithTags } from '~/pages/api/entries';
+
+import { EntryDate } from './date';
+import { EntryEditor } from './editor';
+import { EntryFooter } from './footer';
 
 interface EntryProps {
   entry: SerializedEntryWithTags;
@@ -11,7 +13,7 @@ interface EntryProps {
 
 export const Entry: React.VFC<EntryProps> = ({ entry }) => {
   const [isEditing, { toggle: toggleIsEditing }] = useBoolean(false);
-  const date = format(parseISO(entry.date), 'EEE d MMM Y');
+  const date = parseISO(entry.date);
   const toast = useToast();
   const showComingSoonToast = () =>
     toast({ title: 'Coming soon!', isClosable: true, position: 'top' });
@@ -34,7 +36,7 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
       </Box>
       <Divider orientation="vertical" mx={2} h={32} display={{ base: 'none', md: 'block' }} />
       <Box flex="1">
-        <Heading size="sm">{date}</Heading>
+        <EntryDate date={date} isEditing={isEditing} onChange={() => {}} />
         <Flex wrap="wrap" my={2}>
           {entry.tags.map((tag) => (
             <Tag key={tag.id} colorScheme="orange" size="sm" mt="auto" mr={1} mb={1}>

@@ -5,7 +5,6 @@ import {
   HStack,
   IconButton,
   Spacer,
-  Tooltip as ChakraTooltip,
   useColorModeValue,
   useDisclosure,
   useToken,
@@ -13,6 +12,7 @@ import {
 import { LocationMarkerIcon, PhotographIcon } from '@heroicons/react/solid';
 
 import { DangerConfirmModal } from '~/components/dangerConfirmModal';
+import { Tooltip } from '~/components/tooltip';
 
 interface EntryFooterProps {
   isEditing: boolean;
@@ -134,13 +134,3 @@ export const EntryFooter: React.VFC<EntryFooterProps> = ({
     </>
   );
 };
-
-interface TooltipProps {
-  label: string;
-}
-
-const Tooltip: React.FC<TooltipProps> = ({ label, children }) => (
-  <ChakraTooltip hasArrow closeOnMouseDown openDelay={500} label={label} placement="top">
-    {children}
-  </ChakraTooltip>
-);
