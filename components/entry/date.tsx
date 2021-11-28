@@ -41,6 +41,7 @@ export const EntryDate: React.VFC<EntryDateProps> = ({ date: inputDate, isEditin
     setDate(newDate);
     onChange(newDate);
   };
+  // TODO: just use PopOver
   useOutsideClick({
     ref: datepickerRef,
     handler: () => {
@@ -76,7 +77,13 @@ export const EntryDate: React.VFC<EntryDateProps> = ({ date: inputDate, isEditin
             />
           </Tooltip>
           {isOpen && (
-            <Box className={styles.datePickerContainer} position="absolute" top="100%" left="0">
+            <Box
+              className={styles.datePickerContainer}
+              position="absolute"
+              top="100%"
+              left="0"
+              zIndex="1"
+            >
               <DatePicker selected={date} onChange={handleChange} inline showTimeInput />
             </Box>
           )}

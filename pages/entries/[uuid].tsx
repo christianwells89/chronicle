@@ -22,7 +22,11 @@ export const getServerSideProps: ServerSidePropsGetter = async (context) => {
     return { notFound: true };
   }
 
-  const serializedEntry = { ...entry, date: entry.date.toISOString() };
+  const serializedEntry = {
+    ...entry,
+    date: entry.date.toISOString(),
+    tags: entry.tags.map((t) => t.text),
+  };
   return { props: { entry: serializedEntry } };
 };
 

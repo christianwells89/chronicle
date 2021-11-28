@@ -51,8 +51,8 @@ export const EntryCard: React.VFC<EntryCardProps> = ({ entry }) => {
           </Text>
           <Box pt={1}>
             {entry.tags.map((tag) => (
-              <Tag key={tag.id} colorScheme="orange" size="sm" mr={1}>
-                {tag.text}
+              <Tag key={tag} colorScheme="orange" size="sm" mr={1}>
+                {tag}
               </Tag>
             ))}
           </Box>

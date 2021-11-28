@@ -1,4 +1,12 @@
-import { Box, Divider, Flex, Heading, Spacer, Tag, useBoolean, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Spacer,
+  useBoolean,
+  useColorModeValue,
+  useToast,
+} from '@chakra-ui/react';
 import { parseISO } from 'date-fns';
 
 import type { SerializedEntryWithTags } from '~/pages/api/entries';
@@ -6,6 +14,7 @@ import type { SerializedEntryWithTags } from '~/pages/api/entries';
 import { EntryDate } from './date';
 import { EntryEditor } from './editor';
 import { EntryFooter } from './footer';
+import { EntryTags } from './tags';
 
 interface EntryProps {
   entry: SerializedEntryWithTags;
@@ -14,7 +23,9 @@ interface EntryProps {
 export const Entry: React.VFC<EntryProps> = ({ entry }) => {
   const [isEditing, { toggle: toggleIsEditing }] = useBoolean(false);
   const date = parseISO(entry.date);
+  const borderColor = useColorModeValue('gray.200', 'gray.400');
   const toast = useToast();
+
   const showComingSoonToast = () =>
     toast({ title: 'Coming soon!', isClosable: true, position: 'top' });
 
@@ -34,16 +45,26 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
           onLocationAdd={showComingSoonToast}
         />
       </Box>
-      <Divider orientation="vertical" mx={2} h={32} display={{ base: 'none', md: 'block' }} />
-      <Box flex="1">
+      <Box
+        flex="1"
+        pl={{ base: 0, md: 2 }}
+        pt={4}
+        pb={4}
+        mt="-1em"
+        ml={{ base: 0, md: 2 }}
+        height="fit-content"
+        borderLeftWidth={{ base: '0', md: '2px' }}
+        borderLeftColor={borderColor}
+      >
         <EntryDate date={date} isEditing={isEditing} onChange={() => {}} />
-        <Flex wrap="wrap" my={2}>
-          {entry.tags.map((tag) => (
-            <Tag key={tag.id} colorScheme="orange" size="sm" mt="auto" mr={1} mb={1}>
-              {tag.text}
-            </Tag>
-          ))}
-        </Flex>
+        <Box mt={4} pt={4} borderTop="2px" borderTopColor={borderColor}>
+          <EntryTags
+            tags={entry.tags}
+            isEditing={isEditing}
+            onAddTag={() => {}}
+            onRemoveTag={() => {}}
+          />
+        </Box>
       </Box>
     </Flex>
   );

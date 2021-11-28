@@ -1,10 +1,10 @@
-import { Entry, Tag } from '@prisma/client';
+import { Entry } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 
 import { prisma } from '~/lib/client';
 
-export type SerializedEntryWithTags = Omit<Entry, 'date'> & { date: string; tags: Tag[] };
+export type SerializedEntryWithTags = Omit<Entry, 'date'> & { date: string; tags: string[] };
 
 export interface EntriesData {
   entries: SerializedEntryWithTags[];
@@ -20,6 +20,12 @@ export default nextConnect<NextApiRequest, NextApiResponse<EntriesData>>().get(
       // TODO: make this customizable through a query param
       take: 10,
     });
-    res.json({ entries: entries.map((e) => ({ ...e, date: e.date.toISOString() })) });
+    res.json({
+      entries: entries.map((e) => ({
+        ...e,
+        date: e.date.toISOString(),
+        tags: e.tags.map((t) => t.text),
+      })),
+    });
   },
 );
