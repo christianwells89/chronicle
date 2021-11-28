@@ -1,4 +1,4 @@
-import { Box, Container, Heading, Flex, Spacer, useColorModeValue } from '@chakra-ui/react';
+import { Box, Container, Flex, Heading, Spacer, useColorModeValue } from '@chakra-ui/react';
 
 import { DarkModeSwitch } from './darkModeSwitch';
 import { Link } from './link';

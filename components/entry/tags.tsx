@@ -2,19 +2,19 @@
 import { AddIcon, CheckIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Flex,
   Tag as ChakraTag,
-  TagCloseButton,
-  useBreakpointValue,
-  useColorModeValue,
+  Flex,
+  Input,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Portal,
-  Input,
   Spinner,
-  VStack,
+  TagCloseButton,
   Text,
+  useBreakpointValue,
+  useColorModeValue,
+  VStack,
 } from '@chakra-ui/react';
 import { useCombobox, useMultipleSelection } from 'downshift';
 import { useEffect, useRef, useState } from 'react';
@@ -82,7 +82,7 @@ export const EntryTags: React.VFC<EntryTagsProps> = ({
           create jank when the width of the tags change and the dialog moves. Just doing the
           `containerRef` on this doesn't seem to do it. */}
           <Portal>
-            <PopoverContent maxWidth={56} p={2}>
+            <PopoverContent p={2}>
               <AddTag
                 selectedTags={tags}
                 onSelectTag={handleAddTag}

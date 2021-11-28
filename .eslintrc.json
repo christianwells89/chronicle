@@ -64,6 +64,13 @@
     // Typescript won't let us not define the types, so let me do it how I want
     "react/prop-types": "off",
     // suppress errors for missing 'import React' in files
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "sort-imports": [
+      "error",
+      {
+        "ignoreDeclarationSort": true,
+        "ignoreCase": true
+      }
+    ]
   }
 }
