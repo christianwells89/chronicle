@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Spacer,
-  useBoolean,
-  useColorModeValue,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Flex, Spacer, useBoolean, useColorModeValue, useToast } from '@chakra-ui/react';
 import { parseISO } from 'date-fns';
 
 import type { SerializedEntryWithTags } from '~/pages/api/entries';
@@ -15,6 +7,7 @@ import { EntryDate } from './date';
 import { EntryEditor } from './editor';
 import { EntryFooter } from './footer';
 import { EntryTags } from './tags';
+import { EntryTitle } from './title';
 
 interface EntryProps {
   entry: SerializedEntryWithTags;
@@ -33,7 +26,7 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
     <Flex px={4} direction={{ base: 'column-reverse', md: 'row' }}>
       <Spacer display={{ base: 'none', lg: 'block' }} flex="1" />
       <Box flex="3 0" maxW="container.md">
-        <Heading size="sm">{entry.title}</Heading>
+        <EntryTitle title={entry.title} isEditing={isEditing} onChange={() => {}} />
         <EntryEditor text={entry.text} isEditable={false} />
         <EntryFooter
           isEditing={isEditing}
