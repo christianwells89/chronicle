@@ -18,6 +18,7 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
   const date = parseISO(entry.date);
   const borderColor = useColorModeValue('gray.200', 'gray.400');
   const toast = useToast();
+  const emptyOnChange = () => {};
 
   const showComingSoonToast = () =>
     toast({ title: 'Coming soon!', isClosable: true, position: 'top' });
@@ -26,8 +27,8 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
     <Flex px={4} direction={{ base: 'column-reverse', md: 'row' }}>
       <Spacer display={{ base: 'none', lg: 'block' }} flex="1" />
       <Box flex="3 0" maxW="container.md">
-        <EntryTitle title={entry.title} isEditing={isEditing} onChange={() => {}} />
-        <EntryEditor text={entry.text} isEditable={false} />
+        <EntryTitle title={entry.title} isEditing={isEditing} onChange={emptyOnChange} />
+        <EntryEditor text={entry.text} isEditing={isEditing} onChange={emptyOnChange} />
         <EntryFooter
           isEditing={isEditing}
           hasChanges={false}
@@ -49,13 +50,13 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
         borderLeftWidth={{ base: '0', md: '2px' }}
         borderLeftColor={borderColor}
       >
-        <EntryDate date={date} isEditing={isEditing} onChange={() => {}} />
+        <EntryDate date={date} isEditing={isEditing} onChange={emptyOnChange} />
         <Box mt={4} pt={4} borderTop="2px" borderTopColor={borderColor}>
           <EntryTags
             tags={entry.tags}
             isEditing={isEditing}
-            onAddTag={() => {}}
-            onRemoveTag={() => {}}
+            onAddTag={emptyOnChange}
+            onRemoveTag={emptyOnChange}
           />
         </Box>
       </Box>
