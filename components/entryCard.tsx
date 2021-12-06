@@ -1,5 +1,8 @@
 import { Box, Heading, HStack, Tag, Text, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Editor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import { format, parseISO } from 'date-fns';
+import { useState } from 'react';
 
 import type { SerializedEntryWithTags } from '~/pages/api/entries';
 
@@ -11,8 +14,13 @@ interface EntryCardProps {
 
 export const EntryCard: React.VFC<EntryCardProps> = ({ entry }) => {
   const link = `/entries/${entry.uuid}`;
-  // This actually gets serialized as a string. TODO: correct the types
-  const date = parseISO(entry.date as unknown as string);
+  const date = parseISO(entry.date);
+  // Using `useEditor` results in a memory leak because it tries to update something after the
+  // component is unmounted, somehow. So just manually make an editor and keep it in state. It also
+  // needs _some_ extensions otherwise it causes a fatal error.
+  const [editor] = useState(
+    () => new Editor({ extensions: [StarterKit], content: entry.text, editable: false }),
+  );
 
   return (
     <Link href={link}>
@@ -46,8 +54,8 @@ export const EntryCard: React.VFC<EntryCardProps> = ({ entry }) => {
           <Heading size="sm" isTruncated>
             {entry.title}
           </Heading>
-          <Text fontSize="sm" noOfLines={entry.title === null ? 3 : 2}>
-            {entry.text}
+          <Text as="div" fontSize="sm" noOfLines={entry.title === null ? 3 : 2}>
+            <EditorContent editor={editor} />
           </Text>
           <Box pt={1}>
             {entry.tags.map((tag) => (

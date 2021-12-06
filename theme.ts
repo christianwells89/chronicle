@@ -14,7 +14,6 @@ const styles = {
       background: mode('gray.50', 'gray.900')(props),
       // from https://gist.github.com/waptik/6cf0dc01b17566e02c98eb6ac2c52084, with some adjustments
       '.ProseMirror': {
-        mt: 3,
         '> * + *': {
           marginTop: '0.75em',
         },
@@ -39,6 +38,9 @@ const styles = {
             borderColor: mode('#3182ce', '#63b3ed')(props),
             boxShadow: `0 0 0 1px ${mode('#3182ce', '#63b3ed')(props)}`,
           },
+        },
+        '&.read-only': {
+          mt: 3,
         },
         '&:focus': {
           outline: 'none',

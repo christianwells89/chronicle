@@ -16,7 +16,7 @@ export const EntryEditor: React.VFC<EntryEditorProps> = ({ text, isEditing, onCh
       autofocus: isEditing ? 'end' : false,
       editorProps: {
         attributes: {
-          class: isEditing ? 'is-editing' : '',
+          class: isEditing ? 'is-editing' : 'read-only',
         },
       },
       onUpdate: ({ editor: currentEditor }) => {
