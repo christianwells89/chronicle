@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { AddIcon, CheckIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -26,31 +25,20 @@ import { TagsData } from '~/pages/api/tags';
 interface EntryTagsProps {
   tags: string[];
   isEditing: boolean;
-  onAddTag(tag: string): void;
-  onRemoveTag(tag: string): void;
+  onChange(tags: string[]): void;
 }
 
-export const EntryTags: React.VFC<EntryTagsProps> = ({
-  isEditing,
-  onAddTag,
-  onRemoveTag,
-  ...props
-}) => {
+export const EntryTags: React.VFC<EntryTagsProps> = ({ tags, isEditing, onChange }) => {
   const size = useBreakpointValue({ base: 'md', md: 'sm' });
   const addHoverColor = useColorModeValue('orange.200', 'rgba(251, 211, 141, 0.36)');
   const addActiveColor = useColorModeValue('orange.300', 'rgba(251, 211, 141, 0.56)');
-  // TODO: handle this differently when it's hooked up to a form. It seems even passing a different
-  // reference in as props doesn't trigger a re-render
-  const [tags, setTags] = useState(props.tags);
 
   const handleAddTag = (tag: string) => {
-    setTags([...tags, tag]);
-    onAddTag(tag);
+    onChange([...tags, tag]);
   };
   const handleRemoveTag = (tag: string) => {
     const newTags = tags.filter((item) => item !== tag);
-    setTags(newTags);
-    onRemoveTag(tag);
+    onChange(newTags);
   };
 
   return (
@@ -66,6 +54,7 @@ export const EntryTags: React.VFC<EntryTagsProps> = ({
           <PopoverTrigger>
             <ChakraTag
               as="button"
+              type="button"
               colorScheme="orange"
               size={size}
               mt="auto"
@@ -102,7 +91,7 @@ interface AddTagProps {
   onRemoveTag(tag: string): void;
 }
 
-const AddTag: React.VFC<AddTagProps> = (props) => {
+const AddTag: React.VFC<AddTagProps> = ({ selectedTags, onSelectTag, onRemoveTag }) => {
   const [tags, isLoading] = useTags();
 
   if (isLoading) {
@@ -113,7 +102,14 @@ const AddTag: React.VFC<AddTagProps> = (props) => {
     );
   }
 
-  return <AddTagDialog tags={tags} {...props} />;
+  return (
+    <AddTagDialog
+      tags={tags}
+      selectedTags={selectedTags}
+      onSelectTag={onSelectTag}
+      onRemoveTag={onRemoveTag}
+    />
+  );
 };
 
 interface AddTagDialogProps extends AddTagProps {

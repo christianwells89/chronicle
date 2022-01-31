@@ -1,7 +1,8 @@
 import { Box, Flex, Spacer, useBoolean, useColorModeValue, useToast } from '@chakra-ui/react';
-import { parseISO } from 'date-fns';
+import { Controller, useForm, useFormState } from 'react-hook-form';
 
-import type { SerializedEntryWithTags } from '~/pages/api/entries';
+import { putter } from '~/lib/hooks';
+import type { EntryWithTags } from '~/pages/api/entries';
 
 import { EntryDate } from './date';
 import { EntryEditor } from './editor';
@@ -10,28 +11,47 @@ import { EntryTags } from './tags';
 import { EntryTitle } from './title';
 
 interface EntryProps {
-  entry: SerializedEntryWithTags;
+  entry: EntryWithTags;
 }
 
 export const Entry: React.VFC<EntryProps> = ({ entry }) => {
   const [isEditing, { toggle: toggleIsEditing }] = useBoolean(false);
-  const date = parseISO(entry.date);
   const borderColor = useColorModeValue('gray.200', 'gray.400');
   const toast = useToast();
-  const emptyOnChange = () => {};
+  const { control, handleSubmit, register, watch } = useForm<EntryWithTags>({
+    defaultValues: { ...entry },
+  });
+  const { isDirty } = useFormState({ control });
 
   const showComingSoonToast = () =>
     toast({ title: 'Coming soon!', isClosable: true, position: 'top' });
+  const onSubmit = (data: EntryWithTags) => {
+    // Right now this is optimistic that it will succeed. Tackle error handling later
+    toggleIsEditing();
+    // This will have to conditionally be a POST when creation is added
+    putter(`/api/entries/${data.uuid}`, data);
+  };
 
   return (
-    <Flex px={4} direction={{ base: 'column-reverse', md: 'row' }}>
+    <Flex
+      px={4}
+      direction={{ base: 'column-reverse', md: 'row' }}
+      as="form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Spacer display={{ base: 'none', lg: 'block' }} flex="1" />
       <Box flex="3 0" maxW="container.md">
-        <EntryTitle title={entry.title} isEditing={isEditing} onChange={emptyOnChange} />
-        <EntryEditor text={entry.text} isEditing={isEditing} onChange={emptyOnChange} />
+        <EntryTitle isEditing={isEditing} register={register} watch={watch} />
+        <Controller
+          name="text"
+          control={control}
+          render={({ field }) => (
+            <EntryEditor text={field.value} isEditing={isEditing} onChange={field.onChange} />
+          )}
+        />
         <EntryFooter
           isEditing={isEditing}
-          hasChanges={false}
+          hasChanges={isDirty}
           onEdit={toggleIsEditing}
           onCancel={toggleIsEditing}
           onDelete={toggleIsEditing}
@@ -50,13 +70,20 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
         borderLeftWidth={{ base: '0', md: '2px' }}
         borderLeftColor={borderColor}
       >
-        <EntryDate date={date} isEditing={isEditing} onChange={emptyOnChange} />
+        <Controller
+          name="date"
+          control={control}
+          render={({ field }) => (
+            <EntryDate date={field.value} isEditing={isEditing} onChange={field.onChange} />
+          )}
+        />
         <Box mt={4} pt={4} borderTop="2px" borderTopColor={borderColor}>
-          <EntryTags
-            tags={entry.tags}
-            isEditing={isEditing}
-            onAddTag={emptyOnChange}
-            onRemoveTag={emptyOnChange}
+          <Controller
+            name="tags"
+            control={control}
+            render={({ field }) => (
+              <EntryTags tags={field.value} isEditing={isEditing} onChange={field.onChange} />
+            )}
           />
         </Box>
       </Box>

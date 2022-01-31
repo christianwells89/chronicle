@@ -11,7 +11,7 @@ import {
   useOutsideClick,
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import DatePicker from 'react-datepicker';
 
 import { Tooltip } from '~/components/tooltip';
@@ -25,10 +25,7 @@ interface EntryDateProps {
   onChange(date: Date): void;
 }
 
-export const EntryDate: React.VFC<EntryDateProps> = ({ date: inputDate, isEditing, onChange }) => {
-  // Until the form is properly set up to make this  fully controlled, just keep the state locally
-  // so that selections can be reflected
-  const [date, setDate] = useState(inputDate);
+export const EntryDate: React.VFC<EntryDateProps> = ({ date, isEditing, onChange }) => {
   const [isOpen, { off, toggle: toggleIsOpen }] = useBoolean(false);
   const datepickerRef = useRef<HTMLDivElement>(null);
   const datepickerTheme = useColorModeValue('light-theme', 'dark-theme');
@@ -38,7 +35,6 @@ export const EntryDate: React.VFC<EntryDateProps> = ({ date: inputDate, isEditin
     toggleIsOpen();
   };
   const handleChange = (newDate: Date) => {
-    setDate(newDate);
     onChange(newDate);
   };
   // TODO: just use PopOver

@@ -1,26 +1,21 @@
 import { Flex, Heading, Input } from '@chakra-ui/react';
-import { ChangeEvent } from 'react';
+import { UseFormRegister, UseFormWatch } from 'react-hook-form';
+
+import { EntryWithTags } from '~/pages/api/entries';
 
 interface EntryTitleProps {
-  title: string | null;
+  register: UseFormRegister<EntryWithTags>;
+  watch: UseFormWatch<EntryWithTags>;
   isEditing: boolean;
-  onChange(newTitle: string): void;
 }
 
-export const EntryTitle: React.VFC<EntryTitleProps> = ({ title, isEditing, onChange }) => {
-  if (!isEditing && title === null) return null;
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value);
-  };
+export const EntryTitle: React.VFC<EntryTitleProps> = ({ register, watch, isEditing }) => {
+  const title = watch('title', null);
+  if (!isEditing && !title) return null;
 
   return (
     <Flex alignItems="center" h={10} mb={1}>
-      {isEditing ? (
-        <Input value={title ?? ''} placeholder="Title" onChange={handleChange} />
-      ) : (
-        <Heading size="sm">{title}</Heading>
-      )}
+      {isEditing ? <Input {...register('title')} /> : <Heading size="sm">{title}</Heading>}
     </Flex>
   );
 };

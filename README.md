@@ -3,7 +3,7 @@ This is a simple, self-hosted journaling app inspired by Day One.
 ## MVP TODOs
 
 - [ ] Create new entries
-- [ ] Edit existing entries
+- [x] Edit existing entries
 - [ ] Tags (with management page)
 - [ ] Login page
 - [ ] Register page

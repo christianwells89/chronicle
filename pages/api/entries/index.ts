@@ -4,7 +4,8 @@ import nextConnect from 'next-connect';
 
 import { prisma } from '~/lib/client';
 
-export type SerializedEntryWithTags = Omit<Entry, 'date'> & { date: string; tags: string[] };
+export type EntryWithTags = Omit<Entry, 'id' | 'authorId'> & { tags: string[] };
+export type SerializedEntryWithTags = Omit<EntryWithTags, 'date'> & { date: string };
 
 export interface EntriesData {
   entries: SerializedEntryWithTags[];
@@ -21,11 +22,11 @@ export default nextConnect<NextApiRequest, NextApiResponse<EntriesData>>().get(
       take: 10,
     });
     res.json({
-      entries: entries.map((e) => ({
-        ...e,
-        date: e.date.toISOString(),
-        tags: e.tags.map((t) => t.text),
-      })),
+      entries: entries.map((e) => {
+        const { id, authorId, ...entryWithoutIds } = e;
+
+        return { ...entryWithoutIds, date: e.date.toISOString(), tags: e.tags.map((t) => t.text) };
+      }),
     });
   },
 );

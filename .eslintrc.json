@@ -18,7 +18,8 @@
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
-        "argsIgnorePattern": "^_"
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
       }
     ],
     // There would be an error if it were actually a problem
@@ -61,6 +62,7 @@
         "unnamedComponents": "arrow-function"
       }
     ],
+    "react/jsx-props-no-spreading": ["error", { "html": "ignore", "exceptions": ["Box", "Input"] }],
     // Typescript won't let us not define the types, so let me do it how I want
     "react/prop-types": "off",
     // suppress errors for missing 'import React' in files

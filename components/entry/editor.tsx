@@ -23,7 +23,9 @@ export const EntryEditor: React.VFC<EntryEditorProps> = ({ text, isEditing, onCh
         onChange(currentEditor.getHTML());
       },
     },
-    [text, isEditing],
+    // This is not truly fully controlled because it is not re-setting the content every time it's
+    // given new text. Doing that causes errors with the dirty check for some reason
+    [/* text, */ isEditing],
   );
 
   return <EditorContent editor={editor} />;

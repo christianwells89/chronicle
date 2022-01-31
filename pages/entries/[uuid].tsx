@@ -1,3 +1,4 @@
+import { parseISO } from 'date-fns';
 import { GetServerSideProps, NextPage } from 'next';
 
 import { Entry } from '~/components/entry';
@@ -11,7 +12,13 @@ interface EntryPageProps {
 // TODO: initial viewing of this page should be in read-only mode if given an actualy uuid. If given
 // "new" put it into edit mode straight away
 
-const EntryPage: NextPage<EntryPageProps> = ({ entry }) => <Entry entry={entry} />;
+const EntryPage: NextPage<EntryPageProps> = ({ entry: serializedEntry }) => {
+  const entry = {
+    ...serializedEntry,
+    date: parseISO(serializedEntry.date),
+  };
+  return <Entry entry={entry} />;
+};
 
 type ServerSidePropsGetter = GetServerSideProps<EntryPageProps, { uuid: string }>;
 
@@ -22,8 +29,9 @@ export const getServerSideProps: ServerSidePropsGetter = async (context) => {
     return { notFound: true };
   }
 
+  const { id, authorId, ...entryWithoutIds } = entry;
   const serializedEntry = {
-    ...entry,
+    ...entryWithoutIds,
     date: entry.date.toISOString(),
     tags: entry.tags.map((t) => t.text),
   };
