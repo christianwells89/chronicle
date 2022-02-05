@@ -38,6 +38,6 @@ yarn-error.log*
 
 # prisma
 .env
-/prisma/*.db
+/prisma/*.db*
 
 .vscode
