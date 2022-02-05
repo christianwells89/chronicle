@@ -18,7 +18,7 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
   const [isEditing, { toggle: toggleIsEditing }] = useBoolean(false);
   const borderColor = useColorModeValue('gray.200', 'gray.400');
   const toast = useToast();
-  const { control, handleSubmit, register, watch } = useForm<EntryWithTags>({
+  const { control, getValues, handleSubmit, register } = useForm<EntryWithTags>({
     defaultValues: { ...entry },
   });
   const { isDirty } = useFormState({ control });
@@ -41,7 +41,7 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
     >
       <Spacer display={{ base: 'none', lg: 'block' }} flex="1" />
       <Box flex="3 0" maxW="container.md">
-        <EntryTitle isEditing={isEditing} register={register} watch={watch} />
+        <EntryTitle isEditing={isEditing} register={register} getValues={getValues} />
         <Controller
           name="text"
           control={control}
@@ -53,7 +53,9 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
           isEditing={isEditing}
           hasChanges={isDirty}
           onEdit={toggleIsEditing}
+          // TODO
           onCancel={toggleIsEditing}
+          // TODO
           onDelete={toggleIsEditing}
           onPhotoAdd={showComingSoonToast}
           onLocationAdd={showComingSoonToast}

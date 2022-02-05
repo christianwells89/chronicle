@@ -1,16 +1,16 @@
 import { Flex, Heading, Input } from '@chakra-ui/react';
-import { UseFormRegister, UseFormWatch } from 'react-hook-form';
+import { UseFormGetValues, UseFormRegister } from 'react-hook-form';
 
 import { EntryWithTags } from '~/pages/api/entries';
 
 interface EntryTitleProps {
   register: UseFormRegister<EntryWithTags>;
-  watch: UseFormWatch<EntryWithTags>;
+  getValues: UseFormGetValues<EntryWithTags>;
   isEditing: boolean;
 }
 
-export const EntryTitle: React.VFC<EntryTitleProps> = ({ register, watch, isEditing }) => {
-  const title = watch('title', null);
+export const EntryTitle: React.VFC<EntryTitleProps> = ({ register, getValues, isEditing }) => {
+  const title = getValues('title');
   if (!isEditing && !title) return null;
 
   return (
