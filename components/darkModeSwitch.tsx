@@ -10,7 +10,6 @@ export const DarkModeSwitch: React.VFC = () => {
         size="sm"
         colorScheme="orange"
         variant="outline"
-        my="auto"
         borderRadius="full"
         aria-label="Switch theme"
         icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}

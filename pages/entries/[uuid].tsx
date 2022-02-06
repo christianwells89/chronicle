@@ -9,9 +9,6 @@ interface EntryPageProps {
   entry: SerializedEntryWithTags;
 }
 
-// TODO: initial viewing of this page should be in read-only mode if given an actualy uuid. If given
-// "new" put it into edit mode straight away
-
 const EntryPage: NextPage<EntryPageProps> = ({ entry: serializedEntry }) => {
   const entry = {
     ...serializedEntry,

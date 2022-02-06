@@ -1,7 +1,8 @@
 import { Box, Flex, Spacer, useBoolean, useColorModeValue, useToast } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import { Controller, useForm, useFormState } from 'react-hook-form';
 
-import { putter } from '~/lib/hooks';
+import { poster, putter } from '~/lib/hooks';
 import type { EntryWithTags } from '~/pages/api/entries';
 
 import { EntryDate } from './date';
@@ -11,25 +12,32 @@ import { EntryTags } from './tags';
 import { EntryTitle } from './title';
 
 interface EntryProps {
-  entry: EntryWithTags;
+  entry?: EntryWithTags;
 }
 
+// TODO: this probably should be split into components for new, editing and readonly, just for clarity
+// It would give us the "cancel" functionality by default if it were separate routes too
 export const Entry: React.VFC<EntryProps> = ({ entry }) => {
-  const [isEditing, { toggle: toggleIsEditing }] = useBoolean(false);
+  const [isEditing, { toggle: toggleIsEditing }] = useBoolean(!entry);
   const borderColor = useColorModeValue('gray.200', 'gray.400');
   const toast = useToast();
   const { control, getValues, handleSubmit, register } = useForm<EntryWithTags>({
-    defaultValues: { ...entry },
+    defaultValues: { date: new Date(), tags: [], ...entry },
   });
   const { isDirty } = useFormState({ control });
+  const router = useRouter();
 
   const showComingSoonToast = () =>
     toast({ title: 'Coming soon!', isClosable: true, position: 'top' });
-  const onSubmit = (data: EntryWithTags) => {
-    // Right now this is optimistic that it will succeed. Tackle error handling later
-    toggleIsEditing();
-    // This will have to conditionally be a POST when creation is added
-    putter(`/api/entries/${data.uuid}`, data);
+  const onSubmit = async (data: EntryWithTags) => {
+    if (entry?.uuid) {
+      // Right now this is optimistic that it will succeed. Tackle error handling later
+      toggleIsEditing();
+      putter(`/api/entries/${data.uuid}`, data);
+    } else {
+      const { uuid } = await poster(`/api/entries`, data);
+      router.push(`/entries/${uuid}`);
+    }
   };
 
   return (

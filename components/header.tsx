@@ -2,6 +2,7 @@ import { Box, Container, Flex, Heading, Spacer, useColorModeValue } from '@chakr
 
 import { DarkModeSwitch } from './darkModeSwitch';
 import { Link } from './link';
+import { NewEntryButton } from './newEntryButton';
 import { Quill } from './quill';
 
 export const Header: React.VFC = () => (
@@ -12,7 +13,7 @@ export const Header: React.VFC = () => (
     borderBottomColor={useColorModeValue('gray.200', 'gray.400')}
   >
     <Container maxW="container.md">
-      <Flex>
+      <Flex alignItems="center" gap={2}>
         <Link href="/">
           <Flex alignItems="center">
             <Quill height="30px" />
@@ -22,6 +23,7 @@ export const Header: React.VFC = () => (
           </Flex>
         </Link>
         <Spacer />
+        <NewEntryButton />
         <DarkModeSwitch />
       </Flex>
     </Container>

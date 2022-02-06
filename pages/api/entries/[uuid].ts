@@ -25,6 +25,7 @@ export default nextConnect<Request, NextApiResponse<Data>>()
     }
   })
   .put(async (req, res) => {
+    // TODO: validate that this user actually owns this entry
     const { uuid } = req.query;
     const body: EntryWithTags = JSON.parse(req.body);
     const { date, title, text, tags } = body;

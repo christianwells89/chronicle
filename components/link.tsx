@@ -8,6 +8,8 @@ interface LinkProps {
 
 export const Link: React.FC<LinkProps> = ({ href, children }) => (
   <NextLink href={href} passHref>
-    <chakra.a cursor="pointer">{children}</chakra.a>
+    <chakra.a cursor="pointer" height="fit-content">
+      {children}
+    </chakra.a>
   </NextLink>
 );
