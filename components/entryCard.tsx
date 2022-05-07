@@ -51,7 +51,7 @@ export const EntryCard: React.VFC<EntryCardProps> = ({ entry }) => {
           <Text>{format(date, 'y')}</Text>
         </VStack>
         <Box flex="1">
-          <Heading size="sm" isTruncated>
+          <Heading size="sm" noOfLines={1}>
             {entry.title}
           </Heading>
           <Text as="div" fontSize="sm" noOfLines={entry.title === null ? 3 : 2}>

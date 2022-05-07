@@ -4,6 +4,7 @@ import React from 'react';
 
 interface LinkProps {
   href: string;
+  children: React.ReactNode;
 }
 
 export const Link: React.FC<LinkProps> = ({ href, children }) => (

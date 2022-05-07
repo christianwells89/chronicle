@@ -1,8 +1,9 @@
 {
   "plugins": ["@typescript-eslint", "import"],
-  "extends": ["next/core-web-vitals", "airbnb", "airbnb-typescript", "prettier"],
+  "extends": ["next/core-web-vitals", "airbnb", "airbnb/hooks", "airbnb-typescript", "prettier"],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.lint.json"
   },
   "settings": {
     "import/resolver": {
