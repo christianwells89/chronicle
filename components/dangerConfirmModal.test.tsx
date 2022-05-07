@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { DangerConfirmModal } from './dangerConfirmModal';
 
 describe('DangerConfirmModal', () => {
-  test('should not show show when not open', () => {
+  test('should not show when not open', () => {
     renderComponent({ isOpen: false });
 
     expect(screen.queryByText('Confirm')).not.toBeInTheDocument();

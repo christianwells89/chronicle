@@ -1,10 +1,11 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import mockRouter from 'next-router-mock';
 
 import { NEW_ENTRIES_PATH, NewEntryButton } from './newEntryButton';
 
 describe('NewEntryButton', () => {
-  test('does not show when on the new entry page', () => {
+  test('should not be shown when on the new entry page', () => {
     mockRouter.setCurrentUrl(NEW_ENTRIES_PATH);
 
     render(<NewEntryButton />);
@@ -15,7 +16,7 @@ describe('NewEntryButton', () => {
   test.each([
     ['index', '/'],
     ['existing entry', '/entries/some-uuid'],
-  ])('shows when on %s page', (_, pathname) => {
+  ])('should be shown when on %s page', (_, pathname) => {
     mockRouter.setCurrentUrl(pathname);
 
     render(<NewEntryButton />);
@@ -23,13 +24,11 @@ describe('NewEntryButton', () => {
     expect(screen.getByRole('button', { name: 'Add new entry' })).toBeInTheDocument();
   });
 
-  test('navigates to new entry page on click', () => {
+  test('should navigate to new entry page on click', async () => {
     mockRouter.setCurrentUrl('/');
 
     render(<NewEntryButton />);
-    // userEvent's click doesn't cause the event to propagate or something.
-    // Could be a bug with how the next link is wrapping the chakra one?
-    fireEvent.click(screen.getByRole('button', { name: 'Add new entry' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Add new entry' }));
 
     expect(mockRouter).toMatchObject({ pathname: NEW_ENTRIES_PATH });
   });
