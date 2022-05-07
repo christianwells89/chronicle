@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prisma": "prisma",
-    "types": "tsc --noEmit"
+    "types": "tsc --noEmit",
+    "test": "jest"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.1",
@@ -38,6 +39,9 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^6.3.1",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.2.0",
+    "@testing-library/user-event": "^14.1.1",
     "@types/node": "16.11.7",
     "@types/passport-local": "^1.0.34",
     "@types/react": "^18.0.9",
@@ -55,9 +59,13 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
     "husky": "^7.0.4",
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
     "lint-staged": "^11.2.6",
+    "next-router-mock": "^0.6.8",
     "prettier": "^2.6.2",
     "prisma": "^3.13.0",
+    "ts-jest": "^28.0.1",
     "ts-node": "^10.7.0",
     "typescript": "4.6.4"
   },
