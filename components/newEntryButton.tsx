@@ -4,14 +4,15 @@ import { useRouter } from 'next/router';
 
 import { Link } from './link';
 
+export const NEW_ENTRIES_PATH = '/entries/new';
+
 export const NewEntryButton: React.VFC = () => {
   const router = useRouter();
-  const link = '/entries/new';
 
-  if (router.pathname.endsWith(link)) return null;
+  if (router.pathname.endsWith(NEW_ENTRIES_PATH)) return null;
 
   return (
-    <Link href={link}>
+    <Link href={NEW_ENTRIES_PATH}>
       <Tooltip label="Add new entry">
         <IconButton
           size="sm"

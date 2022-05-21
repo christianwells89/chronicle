@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DangerConfirmModal should include given context and consequences 1`] = `
+<section
+  aria-describedby="chakra-modal--body-:r1:"
+  aria-modal="true"
+  class="chakra-modal__content css-6yiygt"
+  id="chakra-modal-:r1:"
+  role="dialog"
+  style="opacity: 0; transform: scale(0.95) translateZ(0);"
+  tabindex="-1"
+>
+  <div
+    class="chakra-modal__body css-0"
+    id="chakra-modal--body-:r1:"
+  >
+    <p
+      class="chakra-text css-1puzibz"
+    >
+      Are you sure you want to 
+      do that
+      ?
+    </p>
+    <p
+      class="chakra-text css-0"
+    >
+      I would not recommend it
+    </p>
+  </div>
+  <footer
+    class="chakra-modal__footer css-192qrng"
+  >
+    <button
+      class="chakra-button css-eoelga"
+      type="button"
+    >
+      Cancel
+    </button>
+    <button
+      class="chakra-button css-4xx2wk"
+      type="button"
+    >
+      Confirm
+    </button>
+  </footer>
+</section>
+`;
