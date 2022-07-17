@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 
 import { prisma } from '~/lib/client';
+import { protectedApiRoute } from '~/lib/session';
 
 export type EntryWithTags = Omit<Entry, 'id' | 'authorId'> & { tags: string[] };
 export type SerializedEntryWithTags = Omit<EntryWithTags, 'date'> & { date: string };
@@ -12,10 +13,10 @@ export interface EntriesData {
 }
 
 export default nextConnect()
-  .get<NextApiRequest, NextApiResponse<EntriesData>>(async (_req, res) => {
+  .use(protectedApiRoute)
+  .get<NextApiRequest, NextApiResponse<EntriesData>>(async (req, res) => {
     const entries = await prisma.entry.findMany({
-      // TODO: get the user from the request session
-      where: { authorId: { equals: 1 } },
+      where: { authorId: { equals: req.session.user.id } },
       orderBy: { date: 'desc' },
       include: { tags: true },
       // TODO: make this customizable through a query param
@@ -30,20 +31,18 @@ export default nextConnect()
     });
   })
   .post<NextApiRequest, NextApiResponse<SerializedEntryWithTags>>(async (req, res) => {
-    const body: EntryWithTags = JSON.parse(req.body);
-    const { date, title, text, tags } = body;
-    // TODO: get from request auth
-    const userId = 1;
+    const { body } = req;
+    const { date, title, text, tags } = body as EntryWithTags;
+    const userId = req.session.user.id;
 
     // Get or create all relevant tags.
     // TODO: This is copied from the put, so it should be abstracted out somewhere
     const upsertedTags = await Promise.all(
       tags.map((tag) =>
         prisma.tag.upsert({
-          // TODO: get user id from auth
-          where: { text_userId: { text: tag, userId: 1 } },
+          where: { text_userId: { text: tag, userId } },
           update: {},
-          create: { text: tag, userId: 1 },
+          create: { text: tag, userId },
         }),
       ),
     );

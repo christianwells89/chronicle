@@ -1,15 +1,9 @@
 import useSWR from 'swr';
 
-// TODO: handle this better, probably in another place too
-export const fetcher = (url: string) => fetch(url).then((r) => r.json());
-export const putter = (url: string, body: Record<string, unknown> = {}) =>
-  fetch(url, { method: 'PUT', body: JSON.stringify(body) }).then((r) => r.json());
-export const poster = (url: string, body: Record<string, unknown> = {}) =>
-  fetch(url, { method: 'POST', body: JSON.stringify(body) }).then((r) => r.json());
+import { UserDTO } from './user';
 
-export function useUser() {
-  const { data, mutate } = useSWR('/api/user', fetcher);
+export function useUser(): [UserDTO | undefined, boolean] {
+  const { data } = useSWR<UserDTO>('/api/user');
   const isLoading = data === undefined;
-  const user = data?.user;
-  return [user, { mutate, isLoading }];
+  return [data, isLoading];
 }

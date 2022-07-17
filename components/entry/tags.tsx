@@ -19,7 +19,6 @@ import { useCombobox, useMultipleSelection } from 'downshift';
 import { useEffect, useRef, useState } from 'react';
 import useSWR from 'swr';
 
-import { fetcher } from '~/lib/hooks';
 import { TagsData } from '~/pages/api/tags';
 
 interface EntryTagsProps {
@@ -270,7 +269,7 @@ const AddTagDialog: React.VFC<AddTagDialogProps> = ({
 };
 
 function useTags(): [string[], boolean] {
-  const { data } = useSWR<TagsData>('/api/tags', fetcher);
+  const { data } = useSWR<TagsData>('/api/tags');
   const isLoading = data === undefined;
   const tags = data?.tags.map((t) => t.text) ?? [];
   return [tags, isLoading];

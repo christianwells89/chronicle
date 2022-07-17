@@ -28,9 +28,9 @@ function createUser(id: number, username: string) {
     create: {
       id,
       username,
-      // TODO: make this be a sane value when auth is implemented
-      hash: '123456789',
-      salt: '1',
+      // password is 'test'
+      hash: 'd670d3b3d9fa8267d944010df5dcfa6e74905d0f676ede0f5bc7fa2ff88ee5a7e521cbf4cbd9c59454bbae6b27986df1e010476116e989eacf865d534f9b5212',
+      salt: '705cd5113fcbe2ccd6c44ad242fc7ec7',
     },
   });
 }

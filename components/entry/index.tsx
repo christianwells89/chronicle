@@ -2,7 +2,7 @@ import { Box, Flex, Spacer, useBoolean, useColorModeValue, useToast } from '@cha
 import { useRouter } from 'next/router';
 import { Controller, useForm, useFormState } from 'react-hook-form';
 
-import { poster, putter } from '~/lib/hooks';
+import { fetchJson } from '~/lib/fetchJson';
 import type { EntryWithTags } from '~/pages/api/entries';
 
 import { EntryDate } from './date';
@@ -33,9 +33,13 @@ export const Entry: React.VFC<EntryProps> = ({ entry }) => {
     if (entry?.uuid) {
       // Right now this is optimistic that it will succeed. Tackle error handling later
       toggleIsEditing();
-      putter(`/api/entries/${data.uuid}`, data);
+      fetchJson({ url: `/api/entries/${data.uuid}`, body: data, method: 'PUT' });
     } else {
-      const { uuid } = await poster(`/api/entries`, data);
+      const { uuid } = await fetchJson<EntryWithTags>({
+        url: '/api/entries',
+        body: data,
+        method: 'POST',
+      });
       router.push(`/entries/${uuid}`);
     }
   };

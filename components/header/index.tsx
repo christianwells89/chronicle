@@ -1,9 +1,11 @@
 import { Box, Container, Flex, Heading, Spacer, useColorModeValue } from '@chakra-ui/react';
 
+import { Link } from '~/components/link';
+import { Quill } from '~/components/quill';
+
 import { DarkModeSwitch } from './darkModeSwitch';
-import { Link } from './link';
+import { LogoutButton } from './logoutButton';
 import { NewEntryButton } from './newEntryButton';
-import { Quill } from './quill';
 
 export const Header: React.VFC = () => (
   <Box
@@ -25,6 +27,7 @@ export const Header: React.VFC = () => (
         <Spacer />
         <NewEntryButton />
         <DarkModeSwitch />
+        <LogoutButton />
       </Flex>
     </Container>
   </Box>

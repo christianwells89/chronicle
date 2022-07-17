@@ -3,8 +3,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 
 import { prisma } from '~/lib/client';
+import { protectedApiRoute } from '~/lib/session';
 
-import { EntryWithTags } from '.';
+import { EntryWithTags, SerializedEntryWithTags } from '.';
 
 interface Data {
   entry: Entry;
@@ -13,10 +14,11 @@ interface Data {
 type Request = NextApiRequest & { query: { uuid: string } };
 
 export default nextConnect<Request, NextApiResponse<Data>>()
-  .get(async (req, res) => {
+  .use(protectedApiRoute)
+  .get<NextApiRequest, NextApiResponse<SerializedEntryWithTags>>(async (req, res) => {
     const { uuid } = req.query;
 
-    const entry = await prisma.entry.findFirst({ where: { uuid } });
+    const entry = await prisma.entry.findFirst({ where: { uuid, authorId: req.session.user.id } });
 
     if (entry === null) {
       res.writeHead(404, 'Entry not found');
@@ -24,20 +26,24 @@ export default nextConnect<Request, NextApiResponse<Data>>()
       res.status(200).json({ entry });
     }
   })
-  .put(async (req, res) => {
-    // TODO: validate that this user actually owns this entry
+  .put<NextApiRequest, NextApiResponse<SerializedEntryWithTags>>(async (req, res) => {
     const { uuid } = req.query;
-    const body: EntryWithTags = JSON.parse(req.body);
-    const { date, title, text, tags } = body;
+    const { date, title, text, tags } = req.body as EntryWithTags;
+
+    const existingEntry = prisma.entry.findFirst({
+      where: { uuid, authorId: req.session.user.id },
+    });
+    if (existingEntry === null) {
+      res.writeHead(404, 'Entry not found');
+    }
 
     // Get or create all relevant tags
     const upsertedTags = await Promise.all(
       tags.map((tag) =>
         prisma.tag.upsert({
-          // TODO: get user id from auth
-          where: { text_userId: { text: tag, userId: 1 } },
+          where: { text_userId: { text: tag, userId: req.session.user.id } },
           update: {},
-          create: { text: tag, userId: 1 },
+          create: { text: tag, userId: req.session.user.id },
         }),
       ),
     );
