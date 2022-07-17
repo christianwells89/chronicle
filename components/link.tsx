@@ -1,15 +1,13 @@
 import { chakra } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import React from 'react';
+import type { ComponentProps } from 'react';
 
-interface LinkProps {
-  href: string;
-  children: React.ReactNode;
-}
+type LinkProps = { href: string } & ComponentProps<typeof chakra.a>;
 
-export const Link: React.FC<LinkProps> = ({ href, children }) => (
+export const Link: React.FC<LinkProps> = ({ href, children, ...props }) => (
   <NextLink href={href} passHref>
-    <chakra.a cursor="pointer" height="fit-content">
+    {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+    <chakra.a cursor="pointer" height="fit-content" {...props}>
       {children}
     </chakra.a>
   </NextLink>

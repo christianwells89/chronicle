@@ -3,14 +3,15 @@ import { SWRConfig, useSWRConfig } from 'swr';
 
 import { FetchError } from '~/lib/fetchJson';
 
+export const PUBLIC_PATHS = ['/login', '/register'];
+
 export const RouteGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
   const swrConfig = useSWRConfig();
 
-  const publicPaths = ['/login'];
   const path = router.asPath.split('?')[0];
 
-  if (publicPaths.includes(path)) {
+  if (PUBLIC_PATHS.includes(path)) {
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{children}</>;
   }

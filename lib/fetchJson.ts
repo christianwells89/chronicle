@@ -59,3 +59,7 @@ export class FetchError extends Error {
     return this.response.status === 401;
   }
 }
+
+export interface ErrorDTO {
+  message: string;
+}

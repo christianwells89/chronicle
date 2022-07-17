@@ -5,13 +5,13 @@ import { useRouter } from 'next/router';
 import { SWRConfig } from 'swr';
 
 import { Header } from '~/components/header';
-import { RouteGuard } from '~/components/routeGuard';
+import { PUBLIC_PATHS, RouteGuard } from '~/components/routeGuard';
 import { fetchJson } from '~/lib/fetchJson';
 import { theme } from '~/theme';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
-  const isAuthenticated = !router.pathname.endsWith('login');
+  const isAuthenticated = !PUBLIC_PATHS.some((path) => router.pathname.endsWith(path));
 
   return (
     <>

@@ -42,6 +42,8 @@ export const protectedApiRoute = nextConnect()
     }
   });
 
+export const publicApiRoute = nextConnect().use(ironSession(SESSION_OPTIONS));
+
 export function protectedSsr<
   P extends { [key: string]: any } = { [key: string]: any },
   Q extends ParsedUrlQuery = ParsedUrlQuery,

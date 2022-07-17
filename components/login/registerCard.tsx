@@ -1,33 +1,35 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Box, Button, Spinner, Stack, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { FetchError, fetchJson } from '~/lib/fetchJson';
 
+import { AuthenticationDetails } from './card';
 import { Password } from './password';
 import { Username } from './username';
 
-export interface AuthenticationDetails {
-  username: string;
-  password: string;
+interface RegistrationDetails extends AuthenticationDetails {
+  repeatPassword: string;
 }
 
-export const LoginCard: React.FC = () => {
-  // TODO: redirect to index if already logged in
+export const RegisterCard: React.FC = () => {
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-  } = useForm<AuthenticationDetails>();
+    watch,
+  } = useForm<RegistrationDetails>();
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const password = useRef({});
+  password.current = watch('password', '');
 
-  const onSubmit = async (data: AuthenticationDetails) => {
+  const onSubmit = async (data: RegistrationDetails) => {
     try {
       setErrorMessage(null);
-      await fetchJson({ url: '/api/login', body: { ...data }, method: 'POST' });
+      await fetchJson({ url: '/api/register', body: { ...data }, method: 'PUT' });
     } catch (e) {
       if (e instanceof FetchError) {
         setErrorMessage(e.message);
@@ -58,9 +60,17 @@ export const LoginCard: React.FC = () => {
             {...register('password', { required: true })}
             error={errors.password}
           />
+          <Password
+            label="Repeat Password"
+            {...register('repeatPassword', {
+              required: true,
+              validate: (value) => value === password.current || 'The passwords do not match',
+            })}
+            error={errors.repeatPassword}
+          />
         </VStack>
         <Button colorScheme="orange" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : 'Log in'}
+          {isSubmitting ? <Spinner /> : 'Create account'}
         </Button>
         {errorMessage && (
           <Box bg="red.100" color="red.600" p="3" textAlign="center">
