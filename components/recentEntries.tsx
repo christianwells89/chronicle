@@ -6,7 +6,7 @@ import type { EntriesData } from '~/pages/api/entries';
 import { EntryCard } from './entryCard';
 
 export const RecentEntries: React.VFC = () => {
-  const { data } = useSWR<EntriesData>('api/entries');
+  const { data } = useSWR<EntriesData>('/api/entries');
 
   const isLoading = data === undefined;
 
