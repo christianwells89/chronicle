@@ -1,7 +1,7 @@
 export type FetchOptions = {
   url: string;
   body?: Record<string, unknown>;
-  method?: 'GET' | 'POST' | 'PUT';
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
 };
 
 export async function fetchJson<JSON = unknown>(options: string | FetchOptions): Promise<JSON> {

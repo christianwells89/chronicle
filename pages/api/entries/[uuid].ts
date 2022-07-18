@@ -1,4 +1,4 @@
-import { Entry } from '@prisma/client';
+import { Entry, Tag } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 
@@ -7,26 +7,25 @@ import { protectedApiRoute } from '~/lib/session';
 
 import { EntryWithTags, SerializedEntryWithTags } from '.';
 
-interface Data {
-  entry: Entry;
-}
-
 type Request = NextApiRequest & { query: { uuid: string } };
 
-export default nextConnect<Request, NextApiResponse<Data>>()
+export default nextConnect<Request, NextApiResponse<SerializedEntryWithTags>>()
   .use(protectedApiRoute)
-  .get<NextApiRequest, NextApiResponse<SerializedEntryWithTags>>(async (req, res) => {
+  .get(async (req, res) => {
     const { uuid } = req.query;
 
-    const entry = await prisma.entry.findFirst({ where: { uuid, authorId: req.session.user.id } });
+    const entry = await prisma.entry.findFirst({
+      where: { uuid, authorId: req.session.user.id },
+      include: { tags: true },
+    });
 
     if (entry === null) {
       res.writeHead(404, 'Entry not found');
     } else {
-      res.status(200).json({ entry });
+      res.status(200).json({ ...serializeEntry(entry) });
     }
   })
-  .put<NextApiRequest, NextApiResponse<SerializedEntryWithTags>>(async (req, res) => {
+  .put(async (req, res) => {
     const { uuid } = req.query;
     const { date, title, text, tags } = req.body as EntryWithTags;
 
@@ -52,7 +51,28 @@ export default nextConnect<Request, NextApiResponse<Data>>()
     const entry = await prisma.entry.update({
       where: { uuid },
       data: { date, title, text, tags: { set: tagIds } },
+      include: { tags: true },
     });
 
-    res.status(200).json({ entry });
+    res.status(200).json({ ...serializeEntry(entry) });
+  })
+  .delete(async (req, res) => {
+    const { uuid } = req.query;
+
+    await prisma.entry.delete({ where: { uuid } });
+
+    res.writeHead(204).end();
   });
+
+function serializeEntry(
+  entry: Entry & {
+    tags: Tag[];
+  },
+): SerializedEntryWithTags {
+  const { id, authorId, ...entryWithoutIds } = entry;
+  return {
+    ...entryWithoutIds,
+    date: entry.date.toISOString(),
+    tags: entry.tags.map((t) => t.text),
+  };
+}
