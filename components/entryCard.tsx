@@ -13,7 +13,7 @@ interface EntryCardProps {
 }
 
 export const EntryCard: React.VFC<EntryCardProps> = ({ entry }) => {
-  const link = `/entries/${entry.uuid}`;
+  const link = `/entry/${entry.uuid}`;
   const date = parseISO(entry.date);
   // Using `useEditor` results in a memory leak because it tries to update something after the
   // component is unmounted, somehow. So just manually make an editor and keep it in state. It also

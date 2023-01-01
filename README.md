@@ -6,7 +6,7 @@ This is a simple, self-hosted journaling app inspired by Day One.
 - [x] Edit existing entries
 - [x] Tags
 - [x] Login page
-- [ ] Register page
+- [x] Register page
 - [ ] Different views on main page (eg. calendar view)
 
 ## Nice-to-haves

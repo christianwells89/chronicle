@@ -40,7 +40,7 @@ interface PagePartProps {
 const ReadOnlyPage: React.FC<PagePartProps> = ({ entry, toggleIsEditing }) => {
   const router = useRouter();
   const onEdit = () => {
-    router.push({ pathname: `/entries/${entry.uuid}/edit` }, undefined, { shallow: true });
+    router.push({ pathname: `/entry/${entry.uuid}/edit` }, undefined, { shallow: true });
     toggleIsEditing();
   };
 
@@ -50,7 +50,7 @@ const ReadOnlyPage: React.FC<PagePartProps> = ({ entry, toggleIsEditing }) => {
 const EditPage: React.FC<PagePartProps> = ({ entry, toggleIsEditing }) => {
   const router = useRouter();
   const redirectToReadOnly = () => {
-    router.push({ pathname: `/entries/${entry.uuid}` }, undefined, { shallow: true });
+    router.push({ pathname: `/entry/${entry.uuid}` }, undefined, { shallow: true });
     toggleIsEditing();
   };
   const onSubmit = async (editedEntry: EntryWithTags) => {

@@ -15,7 +15,7 @@ describe('NewEntryButton', () => {
 
   test.each([
     ['index', '/'],
-    ['existing entry', '/entries/some-uuid'],
+    ['existing entry', '/entry/some-uuid'],
   ])('should be shown when on %s page', (_, pathname) => {
     mockRouter.setCurrentUrl(pathname);
 

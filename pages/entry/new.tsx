@@ -13,7 +13,7 @@ const NewEntryPage: NextPage = () => {
       body: entry,
       method: 'POST',
     });
-    router.push(`/entries/${uuid}`);
+    router.push(`/entry/${uuid}`);
   };
   const onCancel = () => {
     router.push('/');

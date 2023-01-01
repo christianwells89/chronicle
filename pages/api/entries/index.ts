@@ -1,4 +1,5 @@
-import { Entry } from '@prisma/client';
+import type { Entry, Prisma } from '@prisma/client';
+import { add, parseISO } from 'date-fns';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 
@@ -15,12 +16,11 @@ export interface EntriesData {
 export default nextConnect()
   .use(protectedApiRoute)
   .get<NextApiRequest, NextApiResponse<EntriesData>>(async (req, res) => {
+    const dateQuery = getDateQuery(req);
     const entries = await prisma.entry.findMany({
-      where: { authorId: { equals: req.session.user.id } },
+      where: { authorId: { equals: req.session.user.id }, date: dateQuery },
       orderBy: { date: 'desc' },
       include: { tags: true },
-      // TODO: make this customizable through a query param
-      take: 10,
     });
     res.json({
       entries: entries.map((e) => {
@@ -61,3 +61,15 @@ export default nextConnect()
 
     res.status(200).json(serializedEntry);
   });
+
+function getDateQuery(req: NextApiRequest): Prisma.DateTimeFilter {
+  const dateParam = req.query.date;
+  if (!dateParam || typeof dateParam !== 'string') {
+    return {};
+  }
+
+  // Right now this is always a month, so we'll always add a month to this
+  const date = parseISO(dateParam);
+  const upperLimit = add(date, { months: 1 });
+  return { gte: date, lte: upperLimit };
+}
