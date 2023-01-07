@@ -19,7 +19,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@heroicons/react": "^1.0.5",
-    "@prisma/client": "^3.13.0",
+    "@prisma/client": "^4.8.1",
     "@tiptap/react": "^2.0.0-beta.114",
     "@tiptap/starter-kit": "^2.0.0-beta.191",
     "date-fns": "^2.25.0",
@@ -61,7 +61,7 @@
     "lint-staged": "^11.2.6",
     "next-router-mock": "^0.6.8",
     "prettier": "^2.6.2",
-    "prisma": "^3.13.0",
+    "prisma": "^4.8.1",
     "ts-jest": "^28.0.1",
     "ts-node": "^10.7.0",
     "typescript": "4.6.4"
