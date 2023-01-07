@@ -1,11 +1,12 @@
 {
   "name": "journal",
-  "private": true,
+  "version": "0.0.1",
+  "license": "GPL-3.0",
   "scripts": {
     "prepare": "husky install",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "prisma migrate deploy && next start",
     "lint": "next lint",
     "prisma": "prisma",
     "types": "tsc --noEmit",
