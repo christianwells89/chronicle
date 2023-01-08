@@ -5,5 +5,9 @@ npm-debug.log
 README.md
 .next
 .git
+.husky
+.vscode
+__tests__
 prisma/seed.ts
 prisma/*.db*
+.env

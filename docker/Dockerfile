@@ -1,41 +1,50 @@
-# Currently does not work because the middleware is buggy on React 18. Need to update next in order
-# to fix it
+ARG NODE_VERSION="18.13.0"
+ARG ALPINE_VERSION="3.17"
 
-# Use 16-alpine3.16 instead of 16-alpine because of an issue with OpenSSL and prisma. Once prisma is
-# updated to 4.8.0 this will no longer be needed and can be changed back.
-# See https://github.com/prisma/prisma/issues/16553
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS base
+
+# Set for base and all layers that inherit from it
+ENV NODE_ENV="production"
+
+RUN apk --update-cache add sqlite && rm -rf /var/cache/apk/*
 
 # Install dependencies only when needed
-FROM node:16-alpine3.16 AS deps
+FROM base AS deps
 WORKDIR /app
 
 COPY package.json yarn.lock* ./
 RUN yarn --frozen-lockfile
 
 # Rebuild the source code only when needed
-FROM node:16-alpine3.16 AS builder
+FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 
-# Ordinarily this would happen on install of node module, but the code wasn't in the deps stage
+# Ordinarily this would happen on install of node modules, but the code wasn't in the deps stage
 RUN yarn prisma generate
 RUN yarn build
 
 # Production image, copy all the files and run next
-FROM node:16-alpine3.16 AS runner
+FROM base AS runner
 
-RUN mkdir /data
+ENV DATABASE_FILE="/data/database.sqlite"
+ENV DATABASE_URL="file:${DATABASE_FILE}"
+ENV PORT="3000"
+
+RUN mkdir -m 0777 /data
 VOLUME /data
-ENV DATABASE_URL /data/database.sqlite
+
+RUN sqlite3 ${DATABASE_FILE} "VACUUM;"
+RUN chmod a+rw ${DATABASE_FILE}
 
 WORKDIR /app
 
-ENV NODE_ENV production
-
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder --chown=nextjs:nodejs --chmod=700 /app/docker/startup.sh ./
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
@@ -47,8 +56,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 3000
+EXPOSE ${PORT}
 
-ENV PORT 3000
-
-CMD ["node", "server.js"]
+CMD ./startup.sh

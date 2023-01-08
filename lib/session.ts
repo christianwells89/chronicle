@@ -1,4 +1,3 @@
-import { randomUUID } from 'crypto';
 import { ParsedUrlQuery } from 'querystring';
 
 import type { User } from '@prisma/client';
@@ -12,7 +11,7 @@ import nextConnect from 'next-connect';
 const ttl = hoursToSeconds(8);
 
 export const SESSION_OPTIONS: IronSessionOptions = {
-  password: process.env.TOKEN_SECRET ?? randomUUID(),
+  password: process.env.TOKEN_SECRET,
   cookieName: 'chronicleCookie',
   ttl,
   cookieOptions: {
