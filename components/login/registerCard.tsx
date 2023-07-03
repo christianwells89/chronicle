@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Box, Button, Spinner, Stack, useColorModeValue, VStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -22,6 +22,7 @@ export const RegisterCard: React.FC = () => {
     watch,
   } = useForm<RegistrationDetails>();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const password = useRef({});
   password.current = watch('password', '');
@@ -37,7 +38,7 @@ export const RegisterCard: React.FC = () => {
       }
     }
 
-    const { returnPath = '/' } = router.query;
+    const returnPath = searchParams?.get('returnPath') ?? '/';
     router.push(`${returnPath}`);
   };
 
