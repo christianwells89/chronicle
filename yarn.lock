@@ -6388,6 +6388,11 @@ react-hook-form@^7.30.0:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.30.0.tgz#c9e2fd54d3627e43bd94bf38ef549df2e80c1371"
   integrity sha512-DzjiM6o2vtDGNMB9I4yCqW8J21P314SboNG1O0obROkbg7KVS0I7bMtwSdKyapnCPjHgnxc3L7E5PEdISeEUcQ==
 
+react-intersection-observer@^9.4.3:
+  version "9.4.3"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer/-/react-intersection-observer-9.4.3.tgz#ec84ce0c25cad548075130ea045ac5c7adf908f3"
+  integrity sha512-WNRqMQvKpupr6MzecAQI0Pj0+JQong307knLP4g/nBex7kYfIaZsPpXaIhKHR+oV8z+goUbH9e10j6lGRnTzlQ==
+
 react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -6442,6 +6447,11 @@ react-remove-scroll@^2.5.5:
     tslib "^2.1.0"
     use-callback-ref "^1.3.0"
     use-sidecar "^1.1.2"
+
+react-render-if-visible@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-render-if-visible/-/react-render-if-visible-2.1.1.tgz#b67d8a6d230d8e1e8986212a1d4098425a26810b"
+  integrity sha512-dl6OZkF+ktKi/pMNt5Upn99gSWnOCAQdFp/WBclMsPs4dV/RLeE40lab8tixoHB4UEKsspv0jFR13HF4fxmPHw==
 
 react-style-singleton@^2.2.1:
   version "2.2.1"

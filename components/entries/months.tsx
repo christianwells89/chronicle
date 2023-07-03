@@ -6,26 +6,19 @@ import { Month } from '~/pages/api/entries/months';
 
 interface MonthsProps {
   months: Month[];
-  selectedMonth: Month | undefined;
-  setMonth(month: Month): void;
+  selectedMonth: Month | null;
+  onMonthChange(month: Month, scrollTo: boolean): void;
 }
 
-export const Months: React.FC<MonthsProps> = ({ months, selectedMonth, setMonth }) => (
-  <VStack
-    width="3xs"
-    alignItems="stretch"
-    paddingX="4"
-    height="fit-content"
-    position="sticky"
-    top="4"
-  >
+export const Months: React.FC<MonthsProps> = ({ months, selectedMonth, onMonthChange }) => (
+  <VStack width="3xs" alignItems="stretch" height="fit-content" flex="0">
     {months.map((month, i) => {
       const previous = i === 0 ? null : months[i - 1];
 
       return (
         <Fragment key={month}>
           <MaybeYearDivider current={month} previous={previous} />
-          <MonthItem month={month} selectedMonth={selectedMonth} onClick={setMonth} />
+          <MonthItem month={month} selectedMonth={selectedMonth} onMonthChange={onMonthChange} />
         </Fragment>
       );
     })}
@@ -57,18 +50,22 @@ const MaybeYearDivider: React.FC<YearDividerProps> = ({ previous, current }) => 
 
 interface MonthItemProps {
   month: Month;
-  selectedMonth: Month | undefined;
-  onClick(month: Month): void;
+  selectedMonth: Month | null;
+  onMonthChange(month: Month, scrollTo: boolean): void;
 }
 
-const MonthItem: React.FC<MonthItemProps> = ({ month, selectedMonth, onClick }) => {
+const MonthItem: React.FC<MonthItemProps> = ({ month, selectedMonth, onMonthChange }) => {
   const monthDate = parseISO(month);
-  const handleClick = () => onClick(month);
-  const variant = month === selectedMonth ? 'solid' : 'ghost';
-  const colorScheme = month === selectedMonth ? 'orange' : 'gray';
+  const isActive = selectedMonth === month;
+  const variant = isActive ? 'solid' : 'ghost';
+  const colorScheme = isActive ? 'orange' : 'gray';
+
+  const onClick = () => {
+    onMonthChange(month, true);
+  };
 
   return (
-    <Button size="sm" variant={variant} colorScheme={colorScheme} onClick={handleClick}>
+    <Button size="sm" variant={variant} colorScheme={colorScheme} onClick={onClick}>
       {format(monthDate, 'LLLL')}
     </Button>
   );

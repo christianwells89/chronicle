@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 
-import { UserDTO } from './user';
+import { UserDTO } from '~/lib/user';
 
 export function useUser(): [UserDTO | undefined, boolean] {
   const { data } = useSWR<UserDTO>('/api/user');

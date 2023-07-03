@@ -21,9 +21,11 @@ type DD = `${0}${oneToNine}` | `${1 | 2}${d}` | `3${0 | 1}`;
 export type Month = `${YYYY}-${MM}`;
 export type Day = `${YYYY}-${MM}-${DD}`;
 
+export type EntriesByMonth = Record<Month, number>;
+
 export default nextConnect()
   .use(protectedApiRoute)
-  .get<NextApiRequest, NextApiResponse<Month[]>>(async (req, res) => {
+  .get<NextApiRequest, NextApiResponse<EntriesByMonth>>(async (req, res) => {
     // This would be ideal, and would shift the load to the db, but primsa doesn't seem to be
     // mapping to what SQLite queries consider to be datetimes. This results in 1 null row
     // const authorId = req.session.user.id;
@@ -32,6 +34,8 @@ export default nextConnect()
     // );
     // res.json(result.map((row) => row.month));
 
+    // TODO: this needs to take the user timezone. Right now it's naive to it so just using UTC
+    // which would be confusing to the user since all dates in the app are local
     const result = await prisma.entry.findMany({
       where: { authorId: { equals: req.session.user.id } },
       orderBy: { date: 'desc' },
@@ -40,9 +44,11 @@ export default nextConnect()
 
     const months = result.reduce((acc, row) => {
       const month = format(row.date, 'yyyy-MM') as Month;
-      acc.add(month);
-      return acc;
-    }, new Set<Month>());
 
-    res.json(Array.from(months));
+      acc[month] = acc[month] + 1 || 1;
+
+      return acc;
+    }, {} as EntriesByMonth);
+
+    res.json(months);
   });

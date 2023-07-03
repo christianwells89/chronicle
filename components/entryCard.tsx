@@ -1,3 +1,7 @@
+/**
+ * Deprecated. Keeping it around for posterity for now
+ */
+
 import { Box, Heading, HStack, Tag, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { Editor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';

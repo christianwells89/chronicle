@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import { Link } from '~/components/link';
 
-export const NEW_ENTRIES_PATH = '/entry/new';
+export const NEW_ENTRIES_PATH = '/entries/feed?entry=new';
 
 export const NewEntryButton: React.FC = () => {
   const router = useRouter();

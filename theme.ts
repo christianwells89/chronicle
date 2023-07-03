@@ -8,13 +8,14 @@ const config: ThemeConfig = {
 const styles = {
   global: (props: StyleFunctionProps) => ({
     html: {
-      scrollBehavior: 'smooth',
+      scrollBehavior: 'auto',
     },
     body: {
       background: mode('gray.50', 'gray.900')(props),
       // from https://gist.github.com/waptik/6cf0dc01b17566e02c98eb6ac2c52084, with some adjustments
       '.ProseMirror': {
-        '> * + *': {
+        // don't add a margin on paragraphs in the preview cards
+        ':not(.preview) > * + *': {
           marginTop: '0.75em',
         },
         // @see https://github.com/jesster2k10/guava-cards/blob/5d5c283eb720bf503258f4e17bce3865d35fd8d3/packages/website/src/bundles/editor/ContentEditor.tsx#L86
@@ -139,6 +140,24 @@ const styles = {
           margin: '2rem 0',
         },
       }, // .ProseMirror
+    },
+    '::-webkit-scrollbar': {
+      width: '18px',
+    },
+    '::-webkit-scrollbar-corner': {
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+    },
+    '::-webkit-scrollbar-thumb': {
+      backgroundColor: mode('rgba(0, 0, 0, 0.12)', 'whiteAlpha.300')(props),
+      borderRadius: '20px',
+      border: '6px solid transparent',
+      minHeight: '35px',
+      backgroundClip: 'content-box',
+      padding: '0px',
+      opacity: '0.75',
+    },
+    '::-webkit-scrollbar-track': {
+      backgroundColor: 'rgba(0, 0, 0, 0)',
     },
   }),
 };

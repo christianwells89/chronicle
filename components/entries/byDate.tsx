@@ -1,10 +1,12 @@
-import { VStack } from '@chakra-ui/react';
 import { formatISO, parseISO } from 'date-fns';
 import useSWR from 'swr';
 
-import { EntryCard } from '~/components/entryCard';
+import { EntryCard as NewEntryCard } from '~/components/entries/card';
+import { Link } from '~/components/link';
 import { EntriesData } from '~/pages/api/entries';
 import type { Month } from '~/pages/api/entries/months';
+
+import { EntryCardsContainer } from './cardsContainer';
 
 interface EntriesByDateProps {
   date: Month;
@@ -22,10 +24,12 @@ export const EntriesByDate: React.FC<EntriesByDateProps> = ({ date }) => {
   const { entries }: EntriesData = data;
 
   return (
-    <VStack spacing={4} align="stretch" flex="1">
+    <EntryCardsContainer>
       {entries.map((entry) => (
-        <EntryCard entry={entry} key={entry.uuid} />
+        <Link href={`/entry/${entry.uuid}`} key={entry.uuid}>
+          <NewEntryCard entry={entry} />
+        </Link>
       ))}
-    </VStack>
+    </EntryCardsContainer>
   );
 };

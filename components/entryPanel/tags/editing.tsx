@@ -1,14 +1,15 @@
 import { AddIcon, CheckIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Tag as ChakraTag,
   Flex,
+  HStack,
   Input,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Portal,
   Spinner,
+  Tag,
   TagCloseButton,
   Text,
   useBreakpointValue,
@@ -21,16 +22,20 @@ import useSWR from 'swr';
 
 import { TagsData } from '~/pages/api/tags';
 
-interface EntryTagsProps {
+// There is a fair bit of jank with this since I did it a year and a half ago. This can be improved
+// by both re-evaluating if Chakra's Popper has changed as well as taking a look at the below repo
+// which does a lot of what I'm doing here, except that it actually works nicely. It's opinionated
+// in how it displays the options and it also hasn't been updated in 2 years, so using it directly
+// is not desirable.
+// https://github.com/koolamusic/chakra-ui-autocomplete
+
+interface EditingEntryTagsProps {
   tags: string[];
-  isEditing: boolean;
   onChange(tags: string[]): void;
 }
 
-export const EntryTags: React.VFC<EntryTagsProps> = ({ tags, isEditing, onChange }) => {
+export const EditingEntryTags: React.FC<EditingEntryTagsProps> = ({ tags, onChange }) => {
   const size = useBreakpointValue({ base: 'md', md: 'sm' });
-  const addHoverColor = useColorModeValue('orange.200', 'rgba(251, 211, 141, 0.36)');
-  const addActiveColor = useColorModeValue('orange.300', 'rgba(251, 211, 141, 0.56)');
 
   const handleAddTag = (tag: string) => {
     onChange([...tags, tag]);
@@ -41,46 +46,40 @@ export const EntryTags: React.VFC<EntryTagsProps> = ({ tags, isEditing, onChange
   };
 
   return (
-    <Flex wrap="wrap">
+    <HStack wrap="wrap">
       {tags.map((tag) => (
-        <ChakraTag key={tag} colorScheme="orange" size={size} mt="auto" mr={1} mb={1}>
+        <Tag key={tag} colorScheme="orange" size={size}>
           {tag}
-          {isEditing && <TagCloseButton onClick={() => handleRemoveTag(tag)} />}
-        </ChakraTag>
+          <TagCloseButton onClick={() => handleRemoveTag(tag)} />
+        </Tag>
       ))}
-      {isEditing && (
-        <Popover closeOnBlur closeOnEsc>
-          <PopoverTrigger>
-            <ChakraTag
-              as="button"
-              type="button"
-              colorScheme="orange"
-              size={size}
-              mt="auto"
-              mb={1}
-              px={4}
-              cursor="pointer"
-              _hover={{ bg: addHoverColor }}
-              _active={{ bg: addActiveColor }}
-            >
-              <AddIcon boxSize={2} my="auto" />
-            </ChakraTag>
-          </PopoverTrigger>
-          {/* TODO: make this go under the Flex container rather than the Trigger, because it
+      <Popover closeOnBlur closeOnEsc>
+        <PopoverTrigger>
+          <Tag
+            as="button"
+            type="button"
+            colorScheme="orange"
+            size={size}
+            mt="auto"
+            mb={1}
+            px={4}
+            cursor="pointer"
+            _hover={{ bg: useColorModeValue('orange.200', 'rgba(251, 211, 141, 0.36)') }}
+            _active={{ bg: useColorModeValue('orange.300', 'rgba(251, 211, 141, 0.56)') }}
+          >
+            <AddIcon boxSize={2} my="auto" />
+          </Tag>
+        </PopoverTrigger>
+        {/* TODO: make this go under the Flex container rather than the Trigger, because it
           create jank when the width of the tags change and the dialog moves. Just doing the
           `containerRef` on this doesn't seem to do it. */}
-          <Portal>
-            <PopoverContent p={2}>
-              <AddTag
-                selectedTags={tags}
-                onSelectTag={handleAddTag}
-                onRemoveTag={handleRemoveTag}
-              />
-            </PopoverContent>
-          </Portal>
-        </Popover>
-      )}
-    </Flex>
+        <Portal>
+          <PopoverContent p={2}>
+            <AddTag selectedTags={tags} onSelectTag={handleAddTag} onRemoveTag={handleRemoveTag} />
+          </PopoverContent>
+        </Portal>
+      </Popover>
+    </HStack>
   );
 };
 
