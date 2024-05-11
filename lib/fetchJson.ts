@@ -41,7 +41,10 @@ async function getResponseData(response: Response): Promise<any | undefined> {
 }
 
 export class FetchError extends Error {
-  constructor(public response: Response, public data?: any) {
+  constructor(
+    public response: Response,
+    public data?: any,
+  ) {
     // If there is no message in the data it's probably an unhandled server error. Better to show
     // something slightly friendly here than that statusText or something
     const message = data?.message ?? "Something's gone wrong. Please try again later!";
