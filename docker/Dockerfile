@@ -12,8 +12,10 @@ RUN apk --update-cache add sqlite && rm -rf /var/cache/apk/*
 FROM base AS deps
 WORKDIR /app
 
-COPY package.json yarn.lock* ./
-RUN yarn --frozen-lockfile
+COPY package.json yarn.lock* .yarnrc.yml ./
+# Should use the version specified in package.json that was just copied
+RUN corepack enable yarn && yarn -v
+RUN yarn --immutable
 
 # Rebuild the source code only when needed
 FROM base AS builder
