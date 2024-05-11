@@ -1,5 +1,4 @@
 import { Box } from '@chakra-ui/react';
-import { formatISO, parseISO } from 'date-fns';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 
@@ -15,9 +14,7 @@ import { EntryCardsContainer } from './cardsContainer';
 // entry, which would be a little weird.
 
 export const EntriesForMonth: React.FC<{ month: Month }> = ({ month }) => {
-  const fullRawDate = parseISO(month);
-  const fullDate = formatISO(fullRawDate);
-  const { data } = useSWR(`/api/entries?date=${fullDate}`, { suspense: true });
+  const { data } = useSWR(`/api/entries?date=${month}`, { suspense: true });
   const router = useRouter();
 
   // SWR claim `data` should never be undefined when using suspense but their types aren't

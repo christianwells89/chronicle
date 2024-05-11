@@ -142,10 +142,8 @@ function forceRevalidationOnEntryChange(entry: EntryWithTags, mutate: (key: stri
   const month = format(entry.date, 'yyyy-MM') as Month;
   // It's probably less than ideal that this needs to be done in multiple places, since it's a
   // little weird in what it's doing
-  const fullRawDate = parseISO(month);
-  const fullDate = formatISO(fullRawDate);
 
-  mutate(`/api/entries?date=${fullDate}`);
+  mutate(`/api/entries?date=${month}`);
 }
 
 function serializeEntry(entry: EntryWithTags): SerializedEntryWithTags {
