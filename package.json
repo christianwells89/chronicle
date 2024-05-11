@@ -5,7 +5,7 @@
   "packageManager": "yarn@4.2.2",
   "private": true,
   "scripts": {
-    "postinstall": "husky install",
+    "postinstall": "husky",
     "dev": "next dev",
     "build": "next build",
     "start": "prisma migrate deploy && next start",
@@ -60,31 +60,16 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.5.0",
-    "husky": "^7.0.4",
+    "husky": "^9.0.11",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
-    "lint-staged": "^11.2.6",
+    "lint-staged": "^15.2.2",
     "next-router-mock": "^0.6.8",
     "prettier": "^2.6.2",
     "prisma": "^4.8.1",
     "ts-jest": "^28.0.1",
     "ts-node": "^10.9.2",
     "typescript": "4.6.4"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix",
-      "eslint"
-    ],
-    "*.json": [
-      "prettier --write"
-    ]
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
