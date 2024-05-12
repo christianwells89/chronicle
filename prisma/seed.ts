@@ -14,7 +14,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const user = await createUser(1, 'test');
-  await createUser(2, faker.name.firstName()); // extraneous user
+  await createUser(2, faker.person.firstName()); // extraneous user
 
   const tags = await createTags(user);
 
@@ -69,20 +69,20 @@ async function createEntries(user: User, tags: Tag[]) {
 }
 
 async function createEntry(id: number, day: Date, author: User, allTags: Tag[]) {
-  const date = faker.date.between(
-    day.toISOString(),
-    add(day, { hours: 23, minutes: 59 }).toISOString(),
-  );
+  const date = faker.date.between({
+    from: day.toISOString(),
+    to: add(day, { hours: 23, minutes: 59 }).toISOString(),
+  });
 
-  const titleLength = faker.datatype.number({ min: 0, max: 4 });
-  const title = titleLength === 0 ? null : faker.random.words(titleLength);
+  const titleLength = faker.number.int({ min: 0, max: 4 });
+  const title = titleLength === 0 ? null : faker.lorem.words(titleLength);
 
-  const paragraphCount = faker.datatype.number({ min: 1, max: 5 });
+  const paragraphCount = faker.number.int({ min: 1, max: 5 });
   const text = Array.from({ length: paragraphCount })
     .map(() => `<p>${faker.lorem.paragraph()}</p>`)
     .join('');
 
-  const tags = faker.random.arrayElements(allTags).map((tag) => ({ id: tag.id }));
+  const tags = faker.helpers.arrayElements(allTags).map((tag) => ({ id: tag.id }));
 
   const entry = await prisma.entry.upsert({
     where: { id },
